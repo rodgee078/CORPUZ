@@ -187,3 +187,20 @@ void moveToParentDirectory() {
         cout << "Failed to move to parent directory.\n";
     }
 }
+
+void moveToRootDirectory() {
+    if (_chdir("\\") == 0) {
+        cout << "Moved to root directory.\n";
+    } else {
+        cout << "Failed to move to root directory.\n";
+    }
+}
+
+
+void moveToSpecificDirectory(const string& directoryName) {
+    if (_chdir(directoryName.c_str()) == 0) {
+        cout << "Moved to directory " << directoryName << ".\n";
+    } else {
+        cout << "Failed to move to directory " << directoryName << ".\n";
+    }
+}
