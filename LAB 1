@@ -56,3 +56,134 @@ void showMenu() {
         }
     } while (choice != 4);  
 }
+
+void listFiles() {
+    int choice;
+    cout << "List Files Menu\n";
+    cout << "1. List all files\n";
+    cout << "2. List files by extension\n";
+    cout << "3. List files by pattern\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice) {
+        case 1:
+            listAllFiles();  
+            break;
+        case 2: {
+            string extension;
+            cout << "Enter file extension (e.g., .txt): ";
+            cin >> extension;
+            listFilesByExtension(extension);  
+            break;
+        }
+        case 3: {
+            string pattern;
+            cout << "Enter file pattern (e.g., moha*.*): ";
+            cin >> pattern;
+            listFilesByPattern(pattern);  
+            break;
+        }
+        default:
+            cout << "Invalid choice. Returning to main menu.\n";
+            break;
+    }
+}
+
+
+void listAllFiles() {
+    struct _finddata_t fileinfo;
+    intptr_t handle = _findfirst("*.*", &fileinfo);  
+
+    if (handle == -1) {
+        cout << "No files found.\n";
+    } else {
+        do {
+            cout << fileinfo.name << endl;  
+        } while (_findnext(handle, &fileinfo) == 0);  
+        _findclose(handle);  
+    }
+}
+
+
+void listFilesByExtension(const string& extension) {
+    struct _finddata_t fileinfo;
+    string searchPattern = "*" + extension;  // Create the search pattern
+    intptr_t handle = _findfirst(searchPattern.c_str(), &fileinfo);
+
+    if (handle == -1) {
+        cout << "No files found with the extension " << extension << ".\n";
+    } else {
+        do {
+            cout << fileinfo.name << endl;
+        } while (_findnext(handle, &fileinfo) == 0);
+        _findclose(handle);
+    }
+}
+
+
+void listFilesByPattern(const string& pattern) {
+    struct _finddata_t fileinfo;
+    intptr_t handle = _findfirst(pattern.c_str(), &fileinfo);
+
+    if (handle == -1) {
+        cout << "No files found matching the pattern " << pattern << ".\n";
+    } else {
+        do {
+            cout << fileinfo.name << endl;
+        } while (_findnext(handle, &fileinfo) == 0);
+        _findclose(handle);
+    }
+}
+
+void createDirectory() {
+    string dirName;
+    cout << "Enter the name of the directory: ";
+    cin >> dirName;
+
+    
+    if (_mkdir(dirName.c_str()) == 0) {
+        cout << "Directory created successfully.\n";
+    } else {
+        cout << "Failed to create directory. It may already exist.\n";
+    }
+}
+
+
+void changeDirectory() {
+    int choice;
+    cout << "Change Directory Menu\n";
+    cout << "1. Move to parent directory\n";
+    cout << "2. Move to root directory\n";
+    cout << "3. Move to specific directory\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice) {
+        case 1:
+            moveToParentDirectory();  
+            break;
+        case 2:
+            moveToRootDirectory();  
+            break;
+        case 3: {
+            string dirName;
+            cout << "Enter directory name: ";
+            cin >> dirName;
+            moveToSpecificDirectory(dirName);  
+            break;
+        }
+        default:
+            cout << "Invalid choice. Returning to main menu.\n";
+            break;
+    }
+}
+
+
+void moveToParentDirectory() {
+    if (_chdir("..") == 0) {
+        cout << "Moved to parent directory.\n";
+    } else {
+        cout << "Failed to move to parent directory.\n";
+    }
+}
