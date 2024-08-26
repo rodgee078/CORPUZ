@@ -4,3 +4,48 @@
 #include <string>
 #include <vector>
 #include <windows.h> 
+
+//Function prototypes
+
+void showMenu();
+void listFiles();
+void createDirectory();
+void changeDirectory();
+void listAllFiles();
+void listFilesByExtension(const std::string& extension);
+void listFilesByPattern(const std::string& pattern);
+void moveToParentDirectory();
+void moveToRootDirectory();
+void moveToSpecificDirectory(const std::string& directoryName);
+
+//Main menu 
+void showMenu() {
+    int choice;
+    do {
+        std::cout << "\nDirectory Management System\n";
+        std::cout << "1. List Files\n";
+        std::cout << "2. Create Directory\n";
+        std::cout << "3. Change Directory\n";
+        std::cout << "4. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                listFiles();
+                break;
+            case 2:
+                createDirectory();
+                break;
+            case 3:
+                changeDirectory();
+                break;
+            case 4:
+                std::cout << "Exiting program...\n";
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+                break;
+        }
+    } while (choice != 4);
+}
